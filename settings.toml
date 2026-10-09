@@ -1,0 +1,6 @@
+# Non-secret settings. Secrets (azure_map_key) go in the git-ignored .secrets.toml
+# or DYNACONF_* environment variables; see docs/adr/0013-configuration-and-secrets-with-dynaconf.md.
+
+return_address = """Justin and Dr Ma Lucille Dearing
+219 Scherrer Street
+Cranford, NJ 07016"""

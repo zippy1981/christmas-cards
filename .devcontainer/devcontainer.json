@@ -1,0 +1,35 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+	"name": "Christmas cards (Python 3.13 + PowerShell)",
+	// Matches .python-version. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/python:3-3.13-bookworm",
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/powershell:2": {
+			"version": "lts"
+		}
+	},
+
+	// Create the project venv and install the pinned dependencies (ADR 0012).
+	"postCreateCommand": "python -m venv .venv && .venv/bin/python -m pip install -r requirements.txt -e .",
+
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python"
+			},
+			"extensions": [
+				"ms-python.python",
+				"ms-python.mypy-type-checker",
+				"charliermarsh.ruff",
+				"DavidAnson.vscode-markdownlint",
+				"ms-vscode.powershell"
+			]
+		}
+	}
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
