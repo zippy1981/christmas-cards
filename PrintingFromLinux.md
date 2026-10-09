@@ -2,7 +2,6 @@
 
 This will work from WSL and the only assumption it makes is your printer is connected on 192.168.1.5.
 
-
 ```sh
 sudo apt-get update
 sudo apt-get install cups-client cups-pdf printer-driver-brlaser

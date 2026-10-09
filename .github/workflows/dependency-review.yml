@@ -1,0 +1,28 @@
+name: Dependency review
+
+on:
+  pull_request:
+    paths:
+      - "**/*.py"
+      - "pyproject.toml"
+      - "requirements*.txt"
+      - ".github/workflows/dependency-review.yml"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependency-review:
+    # Dependency review needs GitHub Advanced Security on private repositories. Run on
+    # public repos, or when the GHAS_ENABLED repository variable is "true".
+    if: ${{ (github.event.repository && !github.event.repository.private) || vars.GHAS_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/dependency-review-action@v5
+        with:
+          fail-on-severity: moderate
+          comment-summary-in-pr: on-failure

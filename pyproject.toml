@@ -1,0 +1,110 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "christmas-cards"
+version = "0.1.0"
+description = "Geocode a Christmas card address list and print Avery 5160 mailing labels, as subcommands of a single `xmascards` CLI."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "Justin Dearing" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Environment :: Console",
+    "Typing :: Typed",
+]
+dependencies = [
+    "cyclopts>=5.1,<6",
+    "dynaconf>=3.2,<4",
+    "reportlab>=4.2",
+    "requests>=2.32",
+]
+
+[project.scripts]
+xmascards = "christmas_cards.cli:main"
+
+[project.urls]
+Repository = "https://github.com/zippy1981/christmas-cards"
+
+# PEP 735 dependency groups; install with `pip install --group dev` (pip >= 25.1).
+[dependency-groups]
+test = [
+    "pytest>=9.1",
+    "pytest-cov>=7.1",
+]
+# mypy type-checks tests/, so linting needs the test dependencies as well.
+lint = [
+    { include-group = "test" },
+    "ruff>=0.16",
+    "mypy>=2.4",
+    "types-reportlab",
+    "types-requests",
+]
+dev = [
+    { include-group = "lint" },
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/christmas_cards"]
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=christmas_cards",
+    "--cov-report=term-missing",
+    "--cov-report=xml",
+    "--cov-report=html",
+]
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["christmas_cards"]
+
+[tool.coverage.paths]
+source = ["src/christmas_cards", "*/site-packages/christmas_cards"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+skip_covered = false
+exclude_also = [
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # isort
+    "B",        # flake8-bugbear
+    "UP",       # pyupgrade
+    "SIM",      # flake8-simplify
+    "RUF",      # ruff-specific
+    "PT",       # flake8-pytest-style
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+mypy_path = "src"
+
+# Dynaconf ships no type information.
+[[tool.mypy.overrides]]
+module = ["dynaconf", "dynaconf.*"]
+ignore_missing_imports = true
