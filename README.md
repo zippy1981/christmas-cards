@@ -68,6 +68,50 @@ of teeth I realized it worked in 2023 because I printed from Linux.
 Every command takes its input and output paths as optional arguments; run any command with
 `--help` for details.
 
+## Geocoding the Google Sheet directly
+
+`xmascards geocode sheet` reads the address list straight from Google Sheets and writes the
+geocoding columns back into the same sheet
+([ADR 0015](docs/adr/0015-google-sheets-source-and-credentials.md)). Each geocoded row gets
+an **Address Hash** column, so later runs only geocode new rows and rows whose address
+changed. Pass `--all` to re-geocode everything.
+
+1. In the [Google Cloud console](https://console.cloud.google.com/), enable the
+   **Google Sheets API**, create a **service account**, and create a JSON key for it.
+
+2. Share the spreadsheet with the service account's `client_email` as an **Editor**.
+
+3. Store the key **outside the repository**, readable only by you:
+
+   ```sh
+   mkdir -p ~/.config/christmas-cards
+   mv ~/Downloads/my-project-123abc.json ~/.config/christmas-cards/service-account.json
+   chmod 600 ~/.config/christmas-cards/service-account.json
+   ```
+
+   and point `.secrets.toml` at it, together with the sheet:
+
+   ```toml
+   google_service_account_file = "~/.config/christmas-cards/service-account.json"
+   google_sheet_id = "https://docs.google.com/spreadsheets/d/1AbC.../edit"
+   # google_worksheet = "Addresses"   # default: the first tab
+   ```
+
+   The command refuses a key file that other users can read. Alternatively, keep the key in a
+   secret store and export its JSON as `DYNACONF_GOOGLE_SERVICE_ACCOUNT_INFO` (for example a
+   GitHub Codespaces secret), or use Application Default Credentials:
+   `gcloud auth application-default login --scopes=https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spreadsheets`.
+
+4. Run it:
+
+   ```sh
+   xmascards geocode sheet          # new and changed addresses only
+   xmascards geocode sheet --all    # re-geocode every address
+   ```
+
+5. To print labels, download the sheet as CSV to `Geocoded_Addresses.csv` and continue with
+   `xmascards labels prepare`.
+
 ## Development setup
 
 You need Python 3.12 or newer (3.13 is the default; see `.python-version`). Always
@@ -108,7 +152,8 @@ xmascards --help        # try the CLI
 src/christmas_cards/
 ├── cli.py              # root `xmascards` app; registers subcommand groups
 ├── config.py           # Dynaconf settings (settings.toml, .secrets.toml, DYNACONF_*)
-├── geocoding.py        # OpenStreetMap and Azure Maps lookups
+├── geocoding.py        # OpenStreetMap and Azure Maps lookups, address hashing
+├── google_sheets.py    # Google credentials and in-place sheet geocoding
 ├── labels.py           # Avery 5160 layout and PDF rendering
 └── commands/
     ├── geocode.py      # `xmascards geocode ...`

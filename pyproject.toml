@@ -19,6 +19,8 @@ classifiers = [
 ]
 dependencies = [
     "cyclopts>=5.1,<6",
+    "google-auth>=2.40,<3",
+    "gspread>=6.1,<7",
     "dynaconf>=3.2,<4",
     "reportlab>=4.2",
     "requests>=2.32",

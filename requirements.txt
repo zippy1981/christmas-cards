@@ -6,6 +6,8 @@ attrs==26.1.0
     # via cyclopts
 certifi==2026.7.22
     # via requests
+cffi==2.1.1 ; platform_python_implementation != 'PyPy'
+    # via cryptography
 charset-normalizer==3.5.2
     # via
     #   reportlab
@@ -14,11 +16,22 @@ colorama==0.4.6 ; sys_platform == 'win32'
     # via pytest
 coverage==7.16.2
     # via pytest-cov
+cryptography==50.0.2
+    # via google-auth
 cyclopts==5.2.0
     # via christmas-cards (pyproject.toml)
 docstring-parser==0.18.0
     # via cyclopts
 dynaconf==3.3.5
+    # via christmas-cards (pyproject.toml)
+google-auth==2.61.0
+    # via
+    #   christmas-cards (pyproject.toml)
+    #   google-auth-oauthlib
+    #   gspread
+google-auth-oauthlib==1.5.0
+    # via gspread
+gspread==6.2.1
     # via christmas-cards (pyproject.toml)
 idna==3.20
     # via requests
@@ -34,6 +47,8 @@ mypy==2.4.0
     # via christmas-cards (pyproject.toml:dev)
 mypy-extensions==1.1.0
     # via mypy
+oauthlib==4.0.0
+    # via requests-oauthlib
 packaging==26.3
     # via pytest
 pathspec==1.1.1
@@ -44,6 +59,12 @@ pluggy==1.6.0
     # via
     #   pytest
     #   pytest-cov
+pyasn1==0.6.4
+    # via pyasn1-modules
+pyasn1-modules==0.4.2
+    # via google-auth
+pycparser==3.1 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
+    # via cffi
 pygments==2.21.0
     # via
     #   pytest
@@ -58,7 +79,11 @@ pytest-cov==7.1.0
 reportlab==5.0.1
     # via christmas-cards (pyproject.toml)
 requests==2.34.2
-    # via christmas-cards (pyproject.toml)
+    # via
+    #   christmas-cards (pyproject.toml)
+    #   requests-oauthlib
+requests-oauthlib==2.0.0
+    # via google-auth-oauthlib
 rich==15.0.0
     # via
     #   cyclopts

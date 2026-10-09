@@ -1,5 +1,6 @@
 """Geocode addresses with OpenStreetMap Nominatim and Azure Maps."""
 
+import hashlib
 import json
 import time
 from collections.abc import Iterable, Iterator
@@ -21,9 +22,20 @@ GEOCODE_COLUMNS = [
     "OSM DisplayAddress",
     "Azure Address",
     "Azure Score",
+    "Address Hash",
 ]
+ADDRESS_HASH_COLUMN = "Address Hash"
 
 type Row = dict[str, str]
+
+
+def address_hash(address: str) -> str:
+    """Fingerprint ``address`` so a later run can tell whether it has changed.
+
+    Differences in case and whitespace don't count as changes.
+    """
+    normalized = " ".join(address.split()).casefold()
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
 def osm_url(address: str) -> str:
@@ -91,6 +103,7 @@ def geocode_row(
         "OSM DisplayAddress": osm_display,
         "Azure Address": json.dumps(azure_address),
         "Azure Score": str(azure_score),
+        ADDRESS_HASH_COLUMN: address_hash(address),
     }
 
 

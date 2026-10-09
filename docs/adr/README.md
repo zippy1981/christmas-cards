@@ -21,6 +21,7 @@ ADRs 0001–0012 were adopted from the sibling
 | [0012](0012-pinned-requirements-txt.md) | Pin the development environment in a generated `requirements.txt` | Accepted |
 | [0013](0013-configuration-and-secrets-with-dynaconf.md) | Keep configuration in Dynaconf, with secrets outside version control | Accepted |
 | [0014](0014-dev-container-with-powershell.md) | Provide a Python dev container with PowerShell | Accepted |
+| [0015](0015-google-sheets-source-and-credentials.md) | Geocode the address list in place in a Google Sheet, re-geocoding only changed addresses | Accepted |
 
 ## Adding a new ADR
 
