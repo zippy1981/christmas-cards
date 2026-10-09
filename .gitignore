@@ -2,6 +2,11 @@
 # Ignore dynaconf secret files
 .secrets.*
 
+# Never commit Google credentials; keep them outside the repository (see ADR 0015)
+*service-account*.json
+client_secret*.json
+credentials*.json
+
 # ignore the pdfs and csv files
 *.pdf
 *.csv

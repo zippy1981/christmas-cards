@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from christmas_cards.errors import ChristmasCardsError
+from christmas_cards.geocoding import address_hash
 from tests.conftest import FakeResponse, Responder, RunCli
 
 type FakeHttp = Callable[[Responder], list[str]]
@@ -72,6 +73,7 @@ def test_geocode_csv(run_cli: RunCli, fake_http: FakeHttp, tmp_path: Path) -> No
     assert row["Azure Score"] == "0.98"
     assert "subscription-key=___KEY_HERE___" in row["BINGMAPS_URL"]
     assert row["OSM_URL"] == urls[0]
+    assert row["Address Hash"] == address_hash("1600 Penn Ave")
     assert "subscription-key=secret-key" in urls[1]
 
 

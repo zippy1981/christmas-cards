@@ -1,6 +1,11 @@
-# Non-secret settings. Secrets (azure_map_key) go in the git-ignored .secrets.toml
+# Non-secret settings. Secrets (azure_map_key, Google credentials) go in the git-ignored .secrets.toml
 # or DYNACONF_* environment variables; see docs/adr/0013-configuration-and-secrets-with-dynaconf.md.
 
 return_address = """Justin and Dr Ma Lucille Dearing
 219 Scherrer Street
 Cranford, NJ 07016"""
+
+# Google Sheet for `xmascards geocode sheet` (URL or key), and the tab to use (default: the
+# first). The sheet holds personal data, so you may prefer to set these in .secrets.toml.
+# google_sheet_id = "1AbC..."
+# google_worksheet = "Addresses"

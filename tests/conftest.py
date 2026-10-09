@@ -27,7 +27,15 @@ def run_cli() -> RunCli:
 def isolated_settings(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[Path]:
     """Run each test in an empty directory, so no real settings or secrets are loaded."""
     monkeypatch.chdir(tmp_path)
-    for name in ("DYNACONF_AZURE_MAP_KEY", "DYNACONF_RETURN_ADDRESS"):
+    for name in (
+        "DYNACONF_AZURE_MAP_KEY",
+        "DYNACONF_RETURN_ADDRESS",
+        "DYNACONF_GOOGLE_SHEET_ID",
+        "DYNACONF_GOOGLE_WORKSHEET",
+        "DYNACONF_GOOGLE_SERVICE_ACCOUNT_INFO",
+        "DYNACONF_GOOGLE_SERVICE_ACCOUNT_FILE",
+        "GOOGLE_APPLICATION_CREDENTIALS",
+    ):
         monkeypatch.delenv(name, raising=False)
     get_settings.cache_clear()
     yield tmp_path
